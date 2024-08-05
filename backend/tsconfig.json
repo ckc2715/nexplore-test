@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "lib": ["es6", "dom"],
+    "outDir": "./build",
+    "baseUrl": "./src",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "allowJs": true,
+    "jsx": "react",
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "downlevelIteration": true
+  },
+  "ts-node": {
+    "files": true
+  },
+  "include": ["src", "src/**/*.ts", "tests/**/*.ts"]
+}

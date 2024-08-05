@@ -1,0 +1,50 @@
+version: "3.7"
+
+services:
+  postgresdb:
+    image: postgres:14
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=nexplore
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database-data:/var/lib/postgresql/data/
+
+  todo-api:
+    image: todo-api:1.0
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: builder
+    volumes:
+      - ./backend/src:/usr/app/src
+      - ./backend/nodemon.json:/usr/app/nodemon.json
+      - /usr/app/node_modules
+    container_name: todo-api
+    restart: on-failure
+    environment:
+      - TZ=Asia/Hong_Kong
+      - NODE_ENV=production
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    command: yarn start
+
+  todo-web:
+    build:
+      context: ./frontend
+    ports:
+      - "8081:80"
+    container_name: todo-web

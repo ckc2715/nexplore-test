@@ -1,0 +1,5 @@
+database-data
+build
+node_modules
+coverage
+.env
